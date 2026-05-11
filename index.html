@@ -420,7 +420,7 @@ async function askAI() {
     try {
         const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
             method: 'POST',
-            headers: { 'Authorization': 'Bearer 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', 'Content-Type': 'application/json' },
+            headers: { 'Authorization': 'Bearer YOUR_NEW_GROQ_KEY_HERE', 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
                 model: "llama-3.1-8b-instant", 
                 messages: [{role: "system", content: "You are a professional Noida Health Assistant. Provide specific, helpful health advice and suggest seeing a doctor."}, {role: "user", content: text}] 
