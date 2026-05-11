@@ -83,17 +83,27 @@ function openBooking(name, type) {
 }
 
 function finalizeBooking() {
-    const pat = {
-        name: document.getElementById('patName').value,
-        dob: document.getElementById('patDOB').value,
-        phone: document.getElementById('patPhone').value,
-        problem: document.getElementById('patProblem').value
-    };
+    const pName = document.getElementById('patName').value;
+    const pPhone = document.getElementById('patPhone').value;
+    const pDOB = document.getElementById('patDOB').value;
+    const pProblem = document.getElementById('patProblem').value;
 
-    if(!pat.name || !pat.phone) return alert("Please enter Name and Phone.");
+    if(!pName || !pPhone) return alert("Please enter Name and Phone.");
 
     const bookingId = "MP-" + Math.floor(100000 + Math.random() * 900000);
-    const data = { ...activeTarget, ...pat, id: bookingId, date: new Date().toLocaleString() };
+    
+    // Create a clean data object without collisions
+    const data = { 
+        id: bookingId,
+        date: new Date().toLocaleString(),
+        providerName: activeTarget.name, // Doctor/Lab name
+        type: activeTarget.type,
+        patientName: pName,
+        dob: pDOB,
+        phone: pPhone,
+        problem: pProblem || 'Routine Checkup'
+    };
+
     currentReceiptData = data;
 
     const history = JSON.parse(localStorage.getItem('mp_records') || '[]');
@@ -104,17 +114,17 @@ function finalizeBooking() {
     showReceipt(data);
     renderRecords();
 }
-
 function showReceipt(data) {
     const content = `
         <div class="row g-2 text-dark">
             <div class="col-6"><strong>Slip No:</strong><br>${data.id}</div>
             <div class="col-6"><strong>Date:</strong><br>${data.date.split(',')[0]}</div>
-            <div class="col-12 mt-3 text-primary"><strong>APPOINTMENT WITH:</strong><br><h5>${data.name} (${data.type})</h5></div>
+            <div class="col-12 mt-3 text-primary"><strong>APPOINTMENT WITH:</strong><br><h5 class="fw-bold">${data.providerName} (${data.type})</h5></div>
             <hr>
-            <div class="col-6 small">Name: ${data.name}</div>
-            <div class="col-6 small">DOB: ${data.dob}</div>
-            <div class="col-12 mt-2 small"><strong>CHIEF COMPLAINT:</strong><br>${data.problem || 'Routine Checkup'}</div>
+            <div class="col-12 small fw-bold text-muted text-uppercase">Patient Details</div>
+            <div class="col-6 small"><strong>Name:</strong> ${data.patientName}</div>
+            <div class="col-6 small"><strong>DOB:</strong> ${data.dob || 'N/A'}</div>
+            <div class="col-12 mt-2 small"><strong>CHIEF COMPLAINT:</strong><br>${data.problem}</div>
         </div>
     `;
     document.getElementById('receiptContent').innerHTML = content;
@@ -123,13 +133,16 @@ function showReceipt(data) {
 
 function downloadReceiptPDF() {
     const element = document.getElementById('printableReceipt');
+    
     const opt = {
-        margin: 10,
-        filename: `MedPulse_Slip_${currentReceiptData.id}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        margin:       10,
+        filename:     `MedPulse_Slip_${currentReceiptData.id}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
+
+    // This ensures the element is captured even if it's currently animating
     html2pdf().set(opt).from(element).save();
 }
 
