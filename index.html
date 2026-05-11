@@ -3,75 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Med Plus</title>
+    <title>MedPulse Elite</title>
     
     <!-- External Assets -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
     <!-- Required for PDF Generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-    <style>
-        :root {
-            --primary: #2563eb;
-            --secondary: #7c3aed;
-            --accent: #10b981;
-            --bg: #f3f4f6;
-            --surface: #ffffff;
-            --text: #1f2937;
-            --text-muted: #6b7280;
-            --border: #e5e7eb;
-            --gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
-        }
-
-        [data-theme="dark"] {
-            --bg: #0f172a;
-            --surface: #1e293b;
-            --text: #f1f5f9;
-            --text-muted: #cbd5e1;
-            --border: #334155;
-        }
-
-        body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            transition: 0.3s;
-        }
-
-        /* Dark Mode Visibility Fixes */
-        .text-muted, .lead { color: var(--text-muted) !important; }
-
-        .glass {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            border-radius: 16px;
-        }
-
-        .nav-pills .nav-link.active { background: var(--gradient); }
-        .nav-link { color: var(--text); cursor: pointer; transition: 0.3s; }
-
-        .chat-section { height: 600px; display: flex; flex-direction: column; }
-        #chat-flow { flex-grow: 1; overflow-y: auto; padding: 20px; background: var(--bg); border-radius: 12px; }
-
-        .pro-card { transition: 0.3s; border-radius: 20px; overflow: hidden; border: none; background: var(--surface); }
-        .pro-card:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-
-        .btn-grad { background: var(--gradient); color: white; border: none; }
-        .btn-grad:hover { opacity: 0.9; color: white; }
-
-        .receipt-box { border: 2px dashed #2563eb; padding: 30px; background: #fff; color: #000; border-radius: 10px; }
-        
-        /* Health Tool Grid */
-        .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-        .tool-card { padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; }
-        .tool-card:hover { background: var(--primary); color: white; }
-        .tool-card i { font-size: 2rem; margin-bottom: 10px; }
-
-        .section-padding { padding: 60px 0; }
-    </style>
 </head>
 <body>
 
@@ -99,7 +40,6 @@
 </div>
 
 <main class="container py-5">
-    
     <!-- HOME SECTION -->
     <section id="sec-home" class="view-section animate__animated animate__fadeIn">
         <div class="row align-items-center g-5">
@@ -176,7 +116,7 @@
             <div id="chat-flow"></div>
             <div class="p-3 border-top">
                 <div class="input-group shadow-sm">
-                    <input type="text" id="ai-input" class="form-control py-3 border-0 bg-light" placeholder="Describe your symptoms (e.g. headache, fever)...">
+                    <input type="text" id="ai-input" class="form-control py-3 border-0 bg-light" placeholder="Describe your symptoms...">
                     <button class="btn btn-grad px-4" onclick="askAI()"><i class="fa-solid fa-paper-plane"></i></button>
                 </div>
             </div>
@@ -203,10 +143,9 @@
         <h2 class="fw-bold mb-4">Recent Appointments</h2>
         <div id="records-list" class="row g-3"></div>
     </section>
-
 </main>
 
-<!-- Unified Appointment Modal -->
+<!-- Modals -->
 <div class="modal fade" id="bookModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content pro-card shadow-lg p-3">
@@ -227,7 +166,6 @@
     </div>
 </div>
 
-<!-- Receipt Modal -->
 <div class="modal fade" id="receiptModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content pro-card overflow-hidden">
@@ -239,7 +177,7 @@
                 </div>
                 <div id="receiptContent"></div>
                 <hr>
-                <div class="text-center small text-muted">Please present this digital slip at the reception for verification.</div>
+                <div class="text-center small text-muted">Please present this digital slip at the reception.</div>
             </div>
             <div class="p-3 bg-light d-flex gap-2">
                 <button class="btn btn-primary flex-grow-1" onclick="downloadReceiptPDF()"><i class="fa-solid fa-download me-2"></i>Download PDF</button>
@@ -249,395 +187,14 @@
     </div>
 </div>
 
-<!-- Tool Modals -->
 <div class="modal fade" id="toolModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content glass p-4" id="tool-content"></div>
     </div>
 </div>
 
-<script>
-/* ============ CONFIG & DATA ============ */
-const doctors = [
-    { id: 1, name: "Dr. Vikram Malhotra", spec: "Cardiologist", exp: 18, phone: "9810022334", addr: "Sec-128, Noida", rate: 4.9, icon: "heart-pulse" },
-    { id: 2, name: "Dr. Ananya Iyer", spec: "Dermatologist", exp: 12, phone: "9871122334", addr: "Sec-18, Noida", rate: 4.7, icon: "hand-dots" },
-    { id: 3, name: "Dr. Rajesh Chauhan", spec: "Pediatrician", exp: 20, phone: "9910044556", addr: "Sec-62, Noida", rate: 5.0, icon: "baby" },
-    { id: 4, name: "Dr. S. K. Gupta", spec: "Neurologist", exp: 15, phone: "8822334455", addr: "Sec-27, Noida", rate: 4.8, icon: "brain" },
-    { id: 5, name: "Dr. Pooja Mehra", spec: "Dentist", exp: 8, phone: "9988776655", addr: "Sec-15, Noida", rate: 4.6, icon: "tooth" },
-    { id: 6, name: "Dr. Amit Tyagi", spec: "Orthopedic", exp: 22, phone: "7042334411", addr: "Sec-110, Noida", rate: 4.9, icon: "bone" },
-    { id: 7, name: "Dr. Neha Bhasin", spec: "Gynecologist", exp: 14, phone: "9011223344", addr: "Sec-50, Noida", rate: 4.7, icon: "person-pregnant" },
-    { id: 8, name: "Dr. Rahul Sharma", spec: "Cardiologist", exp: 10, phone: "9811223344", addr: "Sec-62, Noida", rate: 4.8, icon: "heart-pulse" }
-
-];
-
-const labs = [
-    { id: 101, name: "PathKind Noida", dr: "Dr. S. Pathak", tests: "X-Ray, Blood, CT", phone: "0120-445566", addr: "Sec-62, Noida" },
-    { id: 102, name: "Apollo Diagnostics", dr: "Dr. Verma", tests: "Ultrasound, CBC", phone: "0120-223311", addr: "Sec-18, Noida" },
-    { id: 103, name: "City Imaging Center", dr: "Dr. Gupta", tests: "MRI, ECG, BMD", phone: "0120-998877", addr: "Sec-128, Noida" }
-];
-
-let activeTarget = null;
-let currentReceiptData = null;
-
-/* ============ CORE NAVIGATION ============ */
-function showSection(id) {
-    document.querySelectorAll('.view-section').forEach(s => s.classList.add('d-none'));
-    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-    document.getElementById('sec-' + id).classList.remove('d-none');
-    document.getElementById('tab-' + id).classList.add('active');
-    window.scrollTo(0,0);
-}
-
-/* ============ RENDERERS ============ */
-function renderDoctors(data = doctors) {
-    const list = document.getElementById('doctor-list');
-    list.innerHTML = data.map(doc => `
-        <div class="col-md-4">
-            <div class="glass pro-card p-4">
-                <div class="d-flex align-items-center mb-3">
-                    <div class="bg-primary-subtle p-3 rounded-circle me-3"><i class="fa-solid fa-${doc.icon} text-primary fs-4"></i></div>
-                    <div><h6 class="fw-bold mb-0">${doc.name}</h6><small class="text-primary">${doc.spec}</small></div>
-                </div>
-                <p class="small text-muted mb-2"><i class="fa-solid fa-location-dot me-2"></i>${doc.addr}</p>
-                <p class="small fw-bold mb-3 text-warning"><i class="fa-solid fa-star me-2"></i>${doc.rate} | ${doc.exp}Y Experience</p>
-                <div class="d-flex gap-2">
-                    <a href="tel:${doc.phone}" class="btn btn-light btn-sm border"><i class="fa-solid fa-phone"></i></a>
-                    <button class="btn btn-grad btn-sm flex-grow-1" onclick="openBooking('${doc.name}', 'Doctor')">Book Appointment</button>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-function renderLabs() {
-    const list = document.getElementById('lab-list');
-    list.innerHTML = labs.map(lab => `
-        <div class="col-md-6">
-            <div class="glass pro-card p-4 border-start border-primary border-5">
-                <h5 class="fw-bold">${lab.name}</h5>
-                <p class="text-primary mb-2">Director: ${lab.dr}</p>
-                <p class="small text-muted"><i class="fa-solid fa-flask-vial me-2"></i>${lab.tests}</p>
-                <p class="small text-muted mb-3"><i class="fa-solid fa-map-pin me-2"></i>${lab.addr}</p>
-                <div class="d-flex gap-2">
-                    <a href="tel:${lab.phone}" class="btn btn-light btn-sm border px-3"><i class="fa-solid fa-phone"></i></a>
-                    <button class="btn btn-outline-primary btn-sm flex-grow-1 fw-bold" onclick="openBooking('${lab.name}', 'Lab')">Schedule Lab Test</button>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-function filterDoctors() {
-    const spec = document.getElementById('specSelect').value;
-    const filtered = spec === "All" ? doctors : doctors.filter(d => d.spec === spec);
-    renderDoctors(filtered);
-}
-
-/* ============ BOOKING CORE ============ */
-function openBooking(name, type) {
-    activeTarget = { name, type };
-    document.getElementById('book-target').innerText = "Booking: " + name;
-    new bootstrap.Modal('#bookModal').show();
-}
-
-function finalizeBooking() {
-    const pat = {
-        name: document.getElementById('patName').value,
-        dob: document.getElementById('patDOB').value,
-        phone: document.getElementById('patPhone').value,
-        problem: document.getElementById('patProblem').value
-    };
-
-    if(!pat.name || !pat.phone) return alert("Please enter at least Name and Phone Number.");
-
-    const bookingId = "MP-" + Math.floor(100000 + Math.random() * 900000);
-    const data = { ...activeTarget, ...pat, id: bookingId, date: new Date().toLocaleString() };
-    currentReceiptData = data;
-
-    // Persist
-    const history = JSON.parse(localStorage.getItem('mp_records') || '[]');
-    history.unshift(data);
-    localStorage.setItem('mp_records', JSON.stringify(history));
-
-    bootstrap.Modal.getInstance('#bookModal').hide();
-    showReceipt(data);
-    renderRecords();
-}
-
-function showReceipt(data) {
-    const content = `
-        <div class="row g-2 text-dark">
-            <div class="col-6"><strong>Slip No:</strong><br>${data.id}</div>
-            <div class="col-6"><strong>Date:</strong><br>${data.date.split(',')[0]}</div>
-            <div class="col-12 mt-3 text-primary"><strong>APPOINTMENT WITH:</strong><br><h5>${data.name} (${data.type})</h5></div>
-            <hr>
-            <div class="col-12"><strong>PATIENT DETAILS:</strong></div>
-            <div class="col-6 small">Name: ${data.name}</div>
-            <div class="col-6 small">DOB: ${data.dob}</div>
-            <div class="col-6 small">Contact: ${data.phone}</div>
-            <div class="col-12 mt-2 small"><strong>CHIEF COMPLAINT:</strong><br>${data.problem || 'Routine Checkup'}</div>
-        </div>
-    `;
-    document.getElementById('receiptContent').innerHTML = content;
-    new bootstrap.Modal('#receiptModal').show();
-}
-
-function downloadReceiptPDF() {
-    const element = document.getElementById('printableReceipt');
-    const opt = {
-        margin: 10,
-        filename: `MedPulse_Slip_${currentReceiptData.id}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    };
-    html2pdf().set(opt).from(element).save();
-}
-
-function renderRecords() {
-    const history = JSON.parse(localStorage.getItem('mp_records') || '[]');
-    const list = document.getElementById('records-list');
-    list.innerHTML = history.length ? history.map(h => `
-        <div class="col-md-6">
-            <div class="glass p-3 d-flex justify-content-between align-items-center">
-                <div><h6 class="mb-0 fw-bold">${h.name}</h6><small class="text-muted">${h.id} | ${h.date.split(',')[0]}</small></div>
-                <button class="btn btn-sm btn-outline-primary" onclick='showReceipt(${JSON.stringify(h)})'>View Slip</button>
-            </div>
-        </div>
-    `).join('') : '<p class="text-muted">No appointments found.</p>';
-}
-
-/* ============ AI CONSULTATION ============ */
-async function askAI() {
-    const input = document.getElementById('ai-input');
-    const box = document.getElementById('chat-flow');
-    const text = input.value.trim();
-    
-    if(!text) return;
-
-    // 1. Show user message
-    box.innerHTML += `<div class="text-end mb-3"><span class="bg-primary text-white p-2 px-3 rounded-3 d-inline-block shadow-sm">${text}</span></div>`;
-    input.value = "";
-
-    // 2. Professional Security Response
-    // We simulate a brief delay so it feels like the AI is "thinking"
-    setTimeout(() => {
-        box.innerHTML += `
-            <div class="mb-3">
-                <div class="bg-white p-3 rounded-3 border shadow-sm text-dark">
-                    <p class="fw-bold text-danger mb-1"><i class="fa-solid fa-shield-halved me-2"></i>API Access Restricted</p>
-                    <p class="small mb-2">For security reasons, the <strong>Groq API Key</strong> has been removed from this public repository to prevent unauthorized usage and account suspension.</p>
-                    <hr class="my-2">
-                    <p class="x-small text-muted mb-0"><strong>Recruiters/Developers:</strong> To test this feature, please clone the repo and add your own API key in the <code>askAI()</code> function, or contact the developer for a live demo.</p>
-                </div>
-            </div>`;
-        box.scrollTop = box.scrollHeight;
-    }, 600);
-}
-
-function downloadChat() {
-    const element = document.getElementById('chat-flow');
-    html2pdf().from(element).save('Consultation_Log.pdf');
-}
-
-/* ============ HEALTH SUITE TOOLS ============ */
-/* ============ UPDATED HEALTH TOOLS ENGINE ============ */
-function openTool(type) {
-    const content = document.getElementById('tool-content');
-    let html = "";
-    
-    switch(type) {
-        case 'bmi':
-            html = `<h4>BMI Calculator</h4>
-                    <input type="number" id="tw" class="form-control mb-2" placeholder="Weight (kg)">
-                    <input type="number" id="th" class="form-control mb-3" placeholder="Height (cm)">
-                    <button class="btn btn-primary w-100" onclick="calcBMI()">Calculate</button>
-                    <div id="tr" class="mt-3 text-center"></div>`;
-            break;
-
-        case 'water':
-            html = `<h4>Daily Water Goal</h4>
-                    <p class="text-muted">Target: 8 Glasses (2 Liters)</p>
-                    <div class="progress mb-3" style="height: 25px;">
-                        <div id="water-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%;">0%</div>
-                    </div>
-                    <button class="btn btn-primary w-100 py-3" onclick="updateWaterGoal()">Add Glass (250ml)</button>
-                    <button class="btn btn-link btn-sm w-100 mt-2 text-danger" onclick="resetWater()">Reset Today</button>`;
-            setTimeout(refreshWaterBar, 100); // UI Refresh
-            break;
-
-        case 'calorie':
-            html = `<h4>Calorie Needs</h4>
-                    <input type="number" id="tc-age" class="form-control mb-2" placeholder="Age">
-                    <select id="tc-gen" class="form-select mb-2"><option value="m">Male</option><option value="f">Female</option></select>
-                    <input type="number" id="tc-w" class="form-control mb-2" placeholder="Weight (kg)">
-                    <input type="number" id="tc-h" class="form-control mb-3" placeholder="Height (cm)">
-                    <button class="btn btn-primary w-100" onclick="calcCalories()">Estimate Daily Needs</button>
-                    <div id="tr" class="mt-3 text-center"></div>`;
-            break;
-
-        case 'bp':
-            html = `<h4>BP Tracker</h4>
-                    <div class="row g-2">
-                        <div class="col-6"><input type="number" id="ts" class="form-control mb-2" placeholder="Systolic"></div>
-                        <div class="col-6"><input type="number" id="td" class="form-control mb-2" placeholder="Diastolic"></div>
-                    </div>
-                    <button class="btn btn-primary w-100" onclick="checkBP()">Check Category</button>
-                    <h5 id="tr" class="mt-3 text-center"></h5>`;
-            break;
-
-        case 'age':
-            html = `<h4>Age Calculator</h4>
-                    <label class="small">Date of Birth</label>
-                    <input type="date" id="tdob" class="form-control mb-3">
-                    <button class="btn btn-primary w-100" onclick="calcAge()">Calc Exact Age</button>
-                    <h3 id="tr" class="mt-3 text-center"></h3>`;
-            break;
-
-        case 'temp':
-            html = `<h4>Fever Checker</h4>
-                    <input type="number" id="t-temp" class="form-control mb-3" placeholder="Temp in Fahrenheit (°F)">
-                    <button class="btn btn-primary w-100" onclick="checkFever()">Check Status</button>
-                    <h4 id="tr" class="mt-3 text-center"></h4>`;
-            break;
-
-        case 'sugar':
-            html = `<h4>Blood Sugar Checker</h4>
-                    <select id="tsugar-type" class="form-select mb-2">
-                        <option value="fasting">Fasting</option>
-                        <option value="pp">Post Meal (2hrs)</option>
-                    </select>
-                    <input type="number" id="tsugar-val" class="form-control mb-3" placeholder="Level (mg/dL)">
-                    <button class="btn btn-primary w-100" onclick="checkSugar()">Analyze Result</button>
-                    <h5 id="tr" class="mt-3 text-center"></h5>`;
-            break;
-
-        case 'preg':
-            html = `<h4>Due Date Calculator</h4>
-                    <label class="small">Last Period Date (LMP)</label>
-                    <input type="date" id="tpreg-date" class="form-control mb-3">
-                    <button class="btn btn-primary w-100" onclick="calcDueDate()">Calculate Delivery Date</button>
-                    <div id="tr" class="mt-3 text-center"></div>`;
-            break;
-
-        default: html = `<h4>Tool Coming Soon</h4><p>We are adding more smart features weekly!</p>`;
-    }
-    content.innerHTML = html;
-    new bootstrap.Modal('#toolModal').show();
-}
-
-/* ============ TOOL LOGIC FUNCTIONS ============ */
-
-// 1. BMI
-function calcBMI() {
-    const w = document.getElementById('tw').value;
-    const h = document.getElementById('th').value / 100;
-    if(!w || !h) return;
-    const bmi = (w / (h * h)).toFixed(1);
-    let cat = bmi < 18.5 ? "Underweight" : bmi < 25 ? "Healthy" : "Overweight";
-    document.getElementById('tr').innerHTML = `<h2 class="text-primary">${bmi}</h2><p class="fw-bold">${cat}</p>`;
-}
-
-// 2. Water Progress
-function updateWaterGoal() {
-    let count = parseInt(localStorage.getItem('mp_water') || 0);
-    count++;
-    localStorage.setItem('mp_water', count);
-    refreshWaterBar();
-}
-function refreshWaterBar() {
-    const count = parseInt(localStorage.getItem('mp_water') || 0);
-    const pct = Math.min((count / 8) * 100, 100);
-    const bar = document.getElementById('water-bar');
-    if(bar) {
-        bar.style.width = pct + "%";
-        bar.innerText = `${Math.round(pct)}% (${count} Glasses)`;
-    }
-}
-function resetWater() { localStorage.setItem('mp_water', 0); refreshWaterBar(); }
-
-// 3. Calorie Needs (Mifflin-St Jeor Equation)
-function calcCalories() {
-    const w = document.getElementById('tc-w').value;
-    const h = document.getElementById('tc-h').value;
-    const a = document.getElementById('tc-age').value;
-    const g = document.getElementById('tc-gen').value;
-    if(!w || !h || !a) return;
-    
-    let bmr = (10 * w) + (6.25 * h) - (5 * a);
-    bmr = (g === 'm') ? bmr + 5 : bmr - 161;
-    
-    document.getElementById('tr').innerHTML = `<h3>${Math.round(bmr * 1.2)} kcal</h3><p>Daily maintenance calories</p>`;
-}
-
-// 4. Blood Pressure
-function checkBP() {
-    const s = document.getElementById('ts').value;
-    const d = document.getElementById('td').value;
-    if(!s || !d) return;
-    let res = "Normal";
-    if (s >= 140 || d >= 90) res = "<span class='text-danger'>Hypertension Stage 2</span>";
-    else if (s >= 130 || d >= 80) res = "<span class='text-warning'>Hypertension Stage 1</span>";
-    else if (s >= 120 && d < 80) res = "<span class='text-info'>Elevated</span>";
-    document.getElementById('tr').innerHTML = res;
-}
-
-// 5. Age Calculator
-function calcAge() {
-    const dob = new Date(document.getElementById('tdob').value);
-    if(isNaN(dob)) return;
-    const diff = new Date() - dob;
-    const years = Math.floor(diff / 31557600000);
-    const days = Math.floor((diff % 31557600000) / 86400000);
-    document.getElementById('tr').innerText = `${years} Years, ${days} Days`;
-}
-
-// 6. Fever Checker
-function checkFever() {
-    const t = document.getElementById('t-temp').value;
-    if(!t) return;
-    let res = t > 100.4 ? "<span class='text-danger'>High Fever</span>" : t > 99 ? "<span class='text-warning'>Mild Fever</span>" : "<span class='text-success'>Normal</span>";
-    document.getElementById('tr').innerHTML = res;
-}
-
-// 7. Blood Sugar
-function checkSugar() {
-    const type = document.getElementById('tsugar-type').value;
-    const val = document.getElementById('tsugar-val').value;
-    if(!val) return;
-    let status = "";
-    if(type === 'fasting') {
-        status = val < 100 ? "Normal" : val < 126 ? "Pre-diabetic" : "Diabetic Range";
-    } else {
-        status = val < 140 ? "Normal" : val < 200 ? "Pre-diabetic" : "Diabetic Range";
-    }
-    document.getElementById('tr').innerHTML = status;
-}
-
-// 8. Due Date (Naegele's Rule)
-function calcDueDate() {
-    const lmp = new Date(document.getElementById('tpreg-date').value);
-    if(isNaN(lmp)) return;
-    let dueDate = new Date(lmp);
-    dueDate.setDate(dueDate.getDate() + 280); // 40 weeks
-    document.getElementById('tr').innerHTML = `<h4 class="text-primary">${dueDate.toDateString()}</h4><p>Estimated Date of Delivery</p>`;
-}
-
-// Theme Logic
-document.getElementById('theme-toggle').onclick = () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const target = current === 'light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', target);
-    document.getElementById('theme-toggle').innerHTML = target === 'light' ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
-};
-
-// Initial Renders
-renderDoctors();
-renderLabs();
-renderRecords();
-</script>
-
-<!-- Bootstrap JS -->
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
