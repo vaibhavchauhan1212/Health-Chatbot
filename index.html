@@ -106,22 +106,30 @@
         <div id="lab-list" class="row g-4"></div>
     </section>
 
-    <!-- AI CONSULT SECTION -->
-    <section id="sec-ai" class="view-section d-none">
-        <div class="glass chat-section">
-            <div class="p-3 border-bottom d-flex justify-content-between bg-light rounded-top-4">
-                <h5 class="mb-0 text-dark"><i class="fa-solid fa-robot text-primary me-2"></i>AI Symptom Checker</h5>
-                <button class="btn btn-sm btn-dark" onclick="downloadChat()"><i class="fa-solid fa-download me-2"></i>Save Chat</button>
-            </div>
-            <div id="chat-flow"></div>
-            <div class="p-3 border-top">
-                <div class="input-group shadow-sm">
-                    <input type="text" id="ai-input" class="form-control py-3 border-0 bg-light" placeholder="Describe your symptoms...">
-                    <button class="btn btn-grad px-4" onclick="askAI()"><i class="fa-solid fa-paper-plane"></i></button>
-                </div>
-            </div>
+<!-- AI CONSULT SECTION -->
+<section id="sec-ai" class="view-section d-none">
+    <div class="glass chat-section">
+        <div class="p-3 border-bottom d-flex justify-content-between bg-light rounded-top-4">
+            <h5 class="mb-0 text-dark"><i class="fa-solid fa-robot text-primary me-2"></i>AI Symptom Checker</h5>
+            <button class="btn btn-sm btn-dark" onclick="downloadChat()"><i class="fa-solid fa-download me-2"></i>Save Chat</button>
         </div>
-    </section>
+        
+        <div id="chat-flow"></div>
+        
+        <div class="p-3 border-top">
+            <!-- Wrap the input group in a form -->
+            <form onsubmit="event.preventDefault(); askAI();">
+                <div class="input-group shadow-sm">
+                    <input type="text" id="ai-input" class="form-control py-3 border-0 bg-light" placeholder="Describe your symptoms (e.g. headache, fever)..." autocomplete="off">
+                    <!-- Changed button to type="submit" so Enter key works -->
+                    <button type="submit" class="btn btn-grad px-4">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
 
     <!-- HEALTH TOOLS SECTION -->
     <section id="sec-tools" class="view-section d-none">
