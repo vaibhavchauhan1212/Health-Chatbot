@@ -149,14 +149,22 @@ function downloadReceiptPDF() {
 function renderRecords() {
     const history = JSON.parse(localStorage.getItem('mp_records') || '[]');
     const list = document.getElementById('records-list');
+    
     list.innerHTML = history.length ? history.map(h => `
         <div class="col-md-6">
-            <div class="glass p-3 d-flex justify-content-between align-items-center">
-                <div><h6 class="mb-0 fw-bold">${h.name}</h6><small class="text-muted">${h.id}</small></div>
-                <button class="btn btn-sm btn-outline-primary" onclick='showReceipt(${JSON.stringify(h)})'>View Slip</button>
+            <div class="glass p-3 d-flex justify-content-between align-items-center shadow-sm">
+                <div>
+                    <!-- Updated to use providerName instead of name -->
+                    <h6 class="mb-0 fw-bold text-primary">${h.providerName || 'General Appointment'}</h6>
+                    <small class="text-muted">${h.id} | ${h.date ? h.date.split(',')[0] : 'No Date'}</small>
+                    <div class="x-small text-secondary">Patient: ${h.patientName || 'N/A'}</div>
+                </div>
+                <button class="btn btn-sm btn-outline-primary rounded-pill px-3" onclick='showReceipt(${JSON.stringify(h)})'>
+                    View Slip
+                </button>
             </div>
         </div>
-    `).join('') : '<p class="text-muted">No appointments found.</p>';
+    `).join('') : '<p class="text-muted text-center py-4">No appointments found in your history.</p>';
 }
 
 /* ============ AI CONSULTATION ============ */
