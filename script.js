@@ -173,59 +173,112 @@ function downloadChat() {
     html2pdf().from(element).save('Consultation_Log.pdf');
 }
 
-/* ============ HEALTH SUITE TOOLS ============ */
 function openTool(type) {
     const content = document.getElementById('tool-content');
     let html = "";
     
+    // Helper function to create consistent headers
+    const toolHeader = (icon, title) => `
+        <div class="text-center mb-4">
+            <div class="bg-primary-subtle d-inline-block p-3 rounded-circle mb-2">
+                <i class="fa-solid ${icon} text-primary fs-3"></i>
+            </div>
+            <h4 class="fw-bold text-dark">${title}</h4>
+        </div>`;
+
     switch(type) {
         case 'bmi':
-            html = `<h4>BMI Calculator</h4>
-                    <input type="number" id="tw" class="form-control mb-2" placeholder="Weight (kg)">
-                    <input type="number" id="th" class="form-control mb-3" placeholder="Height (cm)">
-                    <button class="btn btn-primary w-100" onclick="calcBMI()">Calculate</button>
-                    <div id="tr" class="mt-3 text-center"></div>`;
+            html = toolHeader('fa-weight-scale', 'BMI Calculator') + `
+                <div class="p-2">
+                    <label class="small fw-bold">Weight (kg)</label>
+                    <input type="number" id="tw" class="form-control mb-3 py-2" placeholder="e.g. 70">
+                    <label class="small fw-bold">Height (cm)</label>
+                    <input type="number" id="th" class="form-control mb-4 py-2" placeholder="e.g. 175">
+                    <button class="btn btn-grad w-100 py-2 fw-bold" onclick="calcBMI()">Analyze BMI</button>
+                    <div id="tr" class="mt-4 text-center"></div>
+                </div>`;
             break;
+
         case 'water':
-            html = `<h4>Water Goal</h4>
-                    <div class="progress mb-3" style="height: 25px;"><div id="water-bar" class="progress-bar" style="width: 0%;">0%</div></div>
-                    <button class="btn btn-primary w-100" onclick="updateWaterGoal()">Add Glass</button>
-                    <button class="btn btn-link btn-sm w-100 mt-2 text-danger" onclick="resetWater()">Reset</button>`;
+            html = toolHeader('fa-droplet', 'Hydration Tracker') + `
+                <div class="p-2 text-center">
+                    <p class="text-muted small mb-4">Daily recommendation: 2-3 Liters (8 Glasses)</p>
+                    <div class="progress mb-4 shadow-sm" style="height: 35px; border-radius: 20px;">
+                        <div id="water-bar" class="progress-bar progress-bar-striped progress-bar-animated bg-info" style="width: 0%;">0%</div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-grad flex-grow-1 py-3" onclick="updateWaterGoal()"><i class="fa-solid fa-plus me-2"></i>Add Glass</button>
+                        <button class="btn btn-outline-danger" onclick="resetWater()"><i class="fa-solid fa-rotate"></i></button>
+                    </div>
+                </div>`;
             setTimeout(refreshWaterBar, 100);
             break;
+
         case 'calorie':
-            html = `<h4>Calorie Needs</h4>
-                    <input type="number" id="tc-age" class="form-control mb-2" placeholder="Age">
-                    <select id="tc-gen" class="form-select mb-2"><option value="m">Male</option><option value="f">Female</option></select>
-                    <input type="number" id="tc-w" class="form-control mb-2" placeholder="Weight (kg)">
-                    <input type="number" id="tc-h" class="form-control mb-3" placeholder="Height (cm)">
-                    <button class="btn btn-primary w-100" onclick="calcCalories()">Calculate</button>
-                    <div id="tr" class="mt-3 text-center"></div>`;
+            html = toolHeader('fa-utensils', 'Calorie Estimator') + `
+                <div class="row g-2">
+                    <div class="col-6 mb-2"><label class="small fw-bold">Age</label><input type="number" id="tc-age" class="form-control" placeholder="Years"></div>
+                    <div class="col-6 mb-2"><label class="small fw-bold">Gender</label><select id="tc-gen" class="form-select"><option value="m">Male</option><option value="f">Female</option></select></div>
+                    <div class="col-6 mb-3"><label class="small fw-bold">Weight (kg)</label><input type="number" id="tc-w" class="form-control"></div>
+                    <div class="col-6 mb-3"><label class="small fw-bold">Height (cm)</label><input type="number" id="tc-h" class="form-control"></div>
+                </div>
+                <button class="btn btn-grad w-100 py-2 mt-2" onclick="calcCalories()">Estimate Needs</button>
+                <div id="tr" class="mt-3 text-center"></div>`;
             break;
+
         case 'bp':
-            html = `<h4>BP Tracker</h4>
-                    <input type="number" id="ts" class="form-control mb-2" placeholder="Systolic">
-                    <input type="number" id="td" class="form-control mb-2" placeholder="Diastolic">
-                    <button class="btn btn-primary w-100" onclick="checkBP()">Check</button>
-                    <h5 id="tr" class="mt-3 text-center"></h5>`;
+            html = toolHeader('fa-heart-pulse', 'Blood Pressure Tracker') + `
+                <div class="row g-3 mb-4">
+                    <div class="col-6 text-center"><label class="small fw-bold d-block">Systolic (Top)</label><input type="number" id="ts" class="form-control form-control-lg text-center" placeholder="120"></div>
+                    <div class="col-6 text-center"><label class="small fw-bold d-block">Diastolic (Bottom)</label><input type="number" id="td" class="form-control form-control-lg text-center" placeholder="80"></div>
+                </div>
+                <button class="btn btn-grad w-100 py-2" onclick="checkBP()">Analyze Category</button>
+                <div id="tr" class="mt-4 text-center"></div>`;
             break;
+
         case 'age':
-            html = `<h4>Age Calc</h4><input type="date" id="tdob" class="form-control mb-3"><button class="btn btn-primary w-100" onclick="calcAge()">Calc</button><h3 id="tr" class="mt-3 text-center"></h3>`;
+            html = toolHeader('fa-calendar-day', 'Age Calculator') + `
+                <div class="p-2">
+                    <label class="small fw-bold">Date of Birth</label>
+                    <input type="date" id="tdob" class="form-control mb-4 py-2">
+                    <button class="btn btn-grad w-100 py-2" onclick="calcAge()">Calculate Exact Age</button>
+                    <div id="tr" class="mt-4 text-center"></div>
+                </div>`;
             break;
+
         case 'temp':
-            html = `<h4>Fever Checker</h4><input type="number" id="t-temp" class="form-control mb-3" placeholder="°F"><button class="btn btn-primary w-100" onclick="checkFever()">Check</button><h4 id="tr" class="mt-3 text-center"></h4>`;
+            html = toolHeader('fa-thermometer', 'Fever Checker') + `
+                <div class="p-2">
+                    <label class="small fw-bold">Temperature (°F)</label>
+                    <input type="number" step="0.1" id="t-temp" class="form-control mb-4 py-3 text-center fs-4" placeholder="98.6">
+                    <button class="btn btn-grad w-100 py-2" onclick="checkFever()">Check Health Status</button>
+                    <div id="tr" class="mt-4 text-center"></div>
+                </div>`;
             break;
+
         case 'sugar':
-            html = `<h4>Blood Sugar</h4>
-                    <select id="tsugar-type" class="form-select mb-2"><option value="fasting">Fasting</option><option value="pp">Post Meal</option></select>
-                    <input type="number" id="tsugar-val" class="form-control mb-3" placeholder="mg/dL">
-                    <button class="btn btn-primary w-100" onclick="checkSugar()">Check</button>
-                    <h5 id="tr" class="mt-3 text-center"></h5>`;
+            html = toolHeader('fa-syringe', 'Blood Sugar Analysis') + `
+                <div class="p-2">
+                    <label class="small fw-bold">Test Type</label>
+                    <select id="tsugar-type" class="form-select mb-3"><option value="fasting">Fasting</option><option value="pp">Post Meal (2hrs)</option></select>
+                    <label class="small fw-bold">Reading (mg/dL)</label>
+                    <input type="number" id="tsugar-val" class="form-control mb-4 py-2" placeholder="e.g. 95">
+                    <button class="btn btn-grad w-100 py-2" onclick="checkSugar()">Check Levels</button>
+                    <div id="tr" class="mt-4 text-center"></div>
+                </div>`;
             break;
+
         case 'preg':
-            html = `<h4>Due Date</h4><input type="date" id="tpreg-date" class="form-control mb-3"><button class="btn btn-primary w-100" onclick="calcDueDate()">Calculate</button><div id="tr" class="mt-3 text-center"></div>`;
+            html = toolHeader('fa-baby', 'Due Date Calculator') + `
+                <div class="p-2 text-center">
+                    <label class="small fw-bold mb-2 d-block">First Day of Last Period (LMP)</label>
+                    <input type="date" id="tpreg-date" class="form-control mb-4 py-2">
+                    <button class="btn btn-grad w-100 py-2" onclick="calcDueDate()">Calculate Delivery Date</button>
+                    <div id="tr" class="mt-4 text-center"></div>
+                </div>`;
             break;
     }
+    
     content.innerHTML = html;
     new bootstrap.Modal('#toolModal').show();
 }
