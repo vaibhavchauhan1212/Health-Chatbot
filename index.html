@@ -412,27 +412,27 @@ async function askAI() {
     const input = document.getElementById('ai-input');
     const box = document.getElementById('chat-flow');
     const text = input.value.trim();
+    
     if(!text) return;
 
-    box.innerHTML += `<div class="text-end mb-3"><span class="bg-primary text-white p-3 d-inline-block rounded-4 shadow-sm">${text}</span></div>`;
+    // 1. Show user message
+    box.innerHTML += `<div class="text-end mb-3"><span class="bg-primary text-white p-2 px-3 rounded-3 d-inline-block shadow-sm">${text}</span></div>`;
     input.value = "";
 
-    try {
-        const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-            method: 'POST',
-            headers: { 'Authorization': 'Bearer YOUR_NEW_GROQ_KEY_HERE', 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                model: "llama-3.1-8b-instant", 
-                messages: [{role: "system", content: "You are a professional Noida Health Assistant. Provide specific, helpful health advice and suggest seeing a doctor."}, {role: "user", content: text}] 
-            })
-        });
-        const data = await res.json();
-        const reply = data.choices[0].message.content;
-        box.innerHTML += `<div class="mb-3"><span class="bg-white text-dark p-3 d-inline-block rounded-4 shadow-sm border">${reply}</span></div>`;
+    // 2. Professional Security Response
+    // We simulate a brief delay so it feels like the AI is "thinking"
+    setTimeout(() => {
+        box.innerHTML += `
+            <div class="mb-3">
+                <div class="bg-white p-3 rounded-3 border shadow-sm text-dark">
+                    <p class="fw-bold text-danger mb-1"><i class="fa-solid fa-shield-halved me-2"></i>API Access Restricted</p>
+                    <p class="small mb-2">For security reasons, the <strong>Groq API Key</strong> has been removed from this public repository to prevent unauthorized usage and account suspension.</p>
+                    <hr class="my-2">
+                    <p class="x-small text-muted mb-0"><strong>Recruiters/Developers:</strong> To test this feature, please clone the repo and add your own API key in the <code>askAI()</code> function, or contact the developer for a live demo.</p>
+                </div>
+            </div>`;
         box.scrollTop = box.scrollHeight;
-    } catch(e) { 
-        box.innerHTML += `<p class="text-danger small">System temporarily busy. Please check your connectivity.</p>`; 
-    }
+    }, 600);
 }
 
 function downloadChat() {
