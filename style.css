@@ -1,0 +1,98 @@
+:root {
+    --primary: #2563eb;
+    --secondary: #7c3aed;
+    --bg: #f3f4f6;
+    --surface: #ffffff;
+    --text: #1f2937;
+    --border: #e5e7eb;
+    --gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+}
+
+[data-theme="dark"] {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --text: #f1f5f9;
+    --border: #334155;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    margin: 0;
+}
+
+/* Glass Effect for Cards */
+.glass {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+/* Fix Tool Grid Layout */
+.tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.tool-card {
+    padding: 25px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid var(--border);
+}
+
+.tool-card:hover {
+    background: var(--gradient);
+    color: white !important;
+    transform: translateY(-5px);
+}
+
+.tool-card i {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    display: block;
+}
+
+/* Chat Layout Fix */
+.chat-section {
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+#chat-flow {
+    flex-grow: 1;
+    overflow-y: auto;
+    background: rgba(0,0,0,0.02);
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+}
+
+/* Button Styling */
+.btn-grad {
+    background: var(--gradient);
+    color: white;
+    border: none;
+    transition: 0.3s;
+}
+
+.btn-grad:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.receipt-box { border: 2px dashed #2563eb; padding: 30px; background: #fff; color: #000; border-radius: 10px; }
+
+.tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+.tool-card { padding: 20px; text-align: center; cursor: pointer; transition: 0.2s; }
+.tool-card:hover { background: var(--primary); color: white; }
+.tool-card i { font-size: 2rem; margin-bottom: 10px; }
+
+.section-padding { padding: 60px 0; }
