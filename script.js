@@ -19,9 +19,16 @@ const doctors = [
 ];
 
 const labs = [
-    { id: 101, name: "PathKind Noida", dr: "Dr. S. Pathak", tests: "X-Ray, Blood, CT", phone: "0120-445566", addr: "Sec-62, Noida" },
-    { id: 102, name: "Apollo Diagnostics", dr: "Dr. Verma", tests: "Ultrasound, CBC", phone: "0120-223311", addr: "Sec-18, Noida" },
-    { id: 103, name: "City Imaging Center", dr: "Dr. Gupta", tests: "MRI, ECG, BMD", phone: "0120-998877", addr: "Sec-128, Noida" }
+    { id: 101, name: "PathKind Noida", dr: "Dr. S. Pathak", tests: "X-Ray, Blood Profile, CT Scan", phone: "0120-445566", addr: "Sec-62, Noida" },
+    { id: 102, name: "Apollo Diagnostics", dr: "Dr. R. Verma", tests: "Ultrasound, CBC, Lipid Profile", phone: "0120-223311", addr: "Sec-18, Noida" },
+    { id: 103, name: "City Imaging Center", dr: "Dr. A. Gupta", tests: "MRI, ECG, Bone Mineral Density (BMD)", phone: "0120-998877", addr: "Sec-128, Noida" },
+    { id: 104, name: "Dr. Lal PathLabs", dr: "Dr. N. Sharma", tests: "HbA1c, Thyroid Profile, Liver Function Test", phone: "0120-334455", addr: "Sec-50, Noida" },
+    { id: 105, name: "Max Labs", dr: "Dr. K. Anand", tests: "Kidney Function Test, Urine Culture, Vitamin D3", phone: "0120-776655", addr: "Sec-15, Noida" },
+    { id: 106, name: "SRL Diagnostics", dr: "Dr. Preeti Malik", tests: "Allergy Panels, Double Marker, Dengue Serology", phone: "0120-889900", addr: "Sec-110, Noida" },
+    { id: 107, name: "Mahajan Imaging", dr: "Dr. V. Mahajan", tests: "3D Mammography, HRCT Chest, Echo", phone: "0120-554433", addr: "Sec-27, Noida" },
+    { id: 108, name: "Thyrocare Noida Center", dr: "Dr. J. Rao", tests: "Full Body Checkup, Iron Profile, Zinc Assay", phone: "0120-112233", addr: "Sec-22, Noida" },
+    { id: 109, name: "Medanta Labs", dr: "Dr. Gaurav Joshi", tests: "Cardiac Biomarkers, Endoscopy Biopsy, PCR", phone: "0120-443322", addr: "Sec-137, Noida" },
+    { id: 110, name: "Metropolis Healthcare", dr: "Dr. Smita Desai", tests: "Coagulation Profile, PAP Smear, RA Factor", phone: "0120-665544", addr: "Sec-76, Noida" }
 ];
 
 let activeTarget = null;
