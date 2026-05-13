@@ -1,4 +1,5 @@
 /* ============ DATA ============ */
+/* ============ DATA ============ */
 const doctors = [
     { id: 1, name: "Dr. Vikram Malhotra", spec: "Cardiologist", exp: 18, phone: "9810022334", addr: "Sec-128, Noida", rate: 4.9, icon: "heart-pulse" },
     { id: 2, name: "Dr. Ananya Iyer", spec: "Dermatologist", exp: 12, phone: "9871122334", addr: "Sec-18, Noida", rate: 4.7, icon: "hand-dots" },
@@ -7,7 +8,14 @@ const doctors = [
     { id: 5, name: "Dr. Pooja Mehra", spec: "Dentist", exp: 8, phone: "9988776655", addr: "Sec-15, Noida", rate: 4.6, icon: "tooth" },
     { id: 6, name: "Dr. Amit Tyagi", spec: "Orthopedic", exp: 22, phone: "7042334411", addr: "Sec-110, Noida", rate: 4.9, icon: "bone" },
     { id: 7, name: "Dr. Neha Bhasin", spec: "Gynecologist", exp: 14, phone: "9011223344", addr: "Sec-50, Noida", rate: 4.7, icon: "person-pregnant" },
-    { id: 8, name: "Dr. Rahul Sharma", spec: "Cardiologist", exp: 10, phone: "9811223344", addr: "Sec-62, Noida", rate: 4.8, icon: "heart-pulse" }
+    { id: 8, name: "Dr. Rahul Sharma", spec: "Cardiologist", exp: 10, phone: "9811223344", addr: "Sec-62, Noida", rate: 4.8, icon: "heart-pulse" },
+    { id: 9, name: "Dr. Shalini Varma", spec: "Dermatologist", exp: 11, phone: "9654112233", addr: "Sec-93, Noida", rate: 4.5, icon: "hand-dots" },
+    { id: 10, name: "Dr. Kunal Kapoor", spec: "Pediatrician", exp: 16, phone: "9560114422", addr: "Sec-137, Noida", rate: 4.9, icon: "baby" },
+    { id: 11, name: "Dr. Meenakshi Joshi", spec: "Neurologist", exp: 13, phone: "8745009988", addr: "Sec-76, Noida", rate: 4.7, icon: "brain" },
+    { id: 12, name: "Dr. Vivek Agrawal", spec: "Orthopedic", exp: 19, phone: "9818334455", addr: "Sec-34, Noida", rate: 4.8, icon: "bone" },
+    { id: 13, name: "Dr. Rohan Nanda", spec: "Cardiologist", exp: 25, phone: "9911882233", addr: "Sec-44, Noida", rate: 5.0, icon: "heart-pulse" },
+    { id: 14, name: "Dr. Kriti Saxena", spec: "Dermatologist", exp: 7, phone: "9311445566", addr: "Sec-22, Noida", rate: 4.4, icon: "hand-dots" },
+    { id: 15, name: "Dr. Abhinav Mishra", spec: "Pediatrician", exp: 9, phone: "9212334455", addr: "Sec-120, Noida", rate: 4.6, icon: "baby" }
 ];
 
 const labs = [
